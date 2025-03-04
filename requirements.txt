@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pytesseract
+opencv-python
+numpy
+matplotlib
+python-multipart  # Hỗ trợ upload file ảnh
