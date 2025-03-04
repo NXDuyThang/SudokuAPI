@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import pytesseract
 from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 import shutil
 import os
 
@@ -110,10 +110,18 @@ async def solve_sudoku_api(file: UploadFile = File(...)):
         else:
             result = {"error": "Không thể giải Sudoku!"}
 
+        # Tạo file txt với kết quả giải
+        solved_filename = "solved_sudoku.txt"
+        with open(solved_filename, "w") as f:
+            f.write("Giải Sudoku:\n")
+            for row in solved_board:
+                f.write(" ".join(row) + "\n")
+
         # Xóa file tạm
         os.remove(temp_filename)
 
-        return JSONResponse(content=result)
+        # Trả về file .txt
+        return FileResponse(solved_filename, media_type='text/plain', filename=solved_filename)
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
