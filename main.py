@@ -8,6 +8,15 @@ import os
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {"message": "Sudoku OCR API is running!"}
+
+# Chạy ứng dụng FastAPI trên cổng của Render
+if __name__ == "__main__":
+    port = int(os.getenv("PORT", 8000))  # Lấy PORT từ biến môi trường, mặc định là 8000
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
 # Xử lý ảnh: Tiền xử lý để nhận diện Sudoku
 def preprocess_image(image_path):
     img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
